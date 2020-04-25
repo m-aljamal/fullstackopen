@@ -13,6 +13,7 @@ function App() {
   return (
     <div className="App">
       <Buttons feedback={feedback} setfeedback={setfeedback} />
+      <h1>Statistics</h1>
       <Statistics feedback={feedback} />
     </div>
   );
