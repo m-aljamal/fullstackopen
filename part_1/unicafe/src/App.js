@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Buttons from "./components/Buttons";
-import Info from "./components/Info";
+import Statistics from "./components/Statistics";
 
 function App() {
   const [feedback, setfeedback] = useState({
@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <Buttons feedback={feedback} setfeedback={setfeedback} />
-      <Info feedback={feedback} />
+      <Statistics feedback={feedback} />
     </div>
   );
 }
