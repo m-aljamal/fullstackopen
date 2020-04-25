@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Buttons from "./components/Buttons";
+import Info from "./components/Info";
 
 function App() {
   const [feedback, setfeedback] = useState({
@@ -12,10 +13,7 @@ function App() {
   return (
     <div className="App">
       <Buttons feedback={feedback} setfeedback={setfeedback} />
-      <h1>Statistics</h1>
-      <p>Good {feedback.good}</p>
-      <p>neutral {feedback.neutral}</p>
-      <p>Bad {feedback.bad}</p>
+      <Info feedback={feedback} />
     </div>
   );
 }
