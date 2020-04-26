@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Anecodtes from "./components/Anecodtes";
-
+import { findMostVotes } from "./utils/findmost";
 const anecdotes = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -21,10 +21,8 @@ function App() {
     4: 0,
     5: 0,
   });
-
   const handleClick = () => {
     const randomNumber = Math.floor(Math.random() * 6);
-
     setSelected(randomNumber);
   };
 
@@ -32,11 +30,18 @@ function App() {
     setPoints({ ...points, [selected]: points[selected] + 1 });
   };
 
+  const most = findMostVotes(points);
   return (
     <div className="App">
       <button onClick={handleClick}>Next anecdote</button>
       <Anecodtes text={anecdotes[selected]} points={points[selected]} />
       <button onClick={handleVote}>Vote</button>
+      <h2>Anecdote with most votes</h2>
+      {most ? (
+        <Anecodtes text={anecdotes[most]} points={points[most]} />
+      ) : (
+        <p>There is no votes yet</p>
+      )}
     </div>
   );
 }

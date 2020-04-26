@@ -1,9 +1,9 @@
 import React from "react";
-
 const Anecodtes = ({ text, points }) => {
   return (
     <div>
       <p>{text}</p>
+
       <p style={{ color: "red" }}>
         Has{" "}
         {points === 0
