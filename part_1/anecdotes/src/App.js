@@ -13,35 +13,32 @@ const anecdotes = [
 
 function App() {
   const [selected, setSelected] = useState(0);
-  const [points, setPoints] = useState({
-    0: 0,
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-  });
+  const [points, setPoints] = useState({});
+  const [mostVotes, setMostVotes] = useState(0);
   const handleClick = () => {
-    const randomNumber = Math.floor(Math.random() * 6);
+    let randomNumber = Math.floor(Math.random() * anecdotes.length);
+    while (randomNumber === selected) {
+      randomNumber = Math.floor(Math.random() * anecdotes.length);
+    }
     setSelected(randomNumber);
   };
 
   const handleVote = () => {
-    setPoints({ ...points, [selected]: points[selected] + 1 });
+    const selectedVot = points[selected] || 0;
+    setPoints({ ...points, [selected]: selectedVot + 1 });
+    if (!points[mostVotes] || selectedVot + 1 > points[mostVotes]) {
+      setMostVotes(selected);
+    }
   };
 
-  const most = findMostVotes(points);
   return (
     <div className="App">
       <button onClick={handleClick}>Next anecdote</button>
       <Anecodtes text={anecdotes[selected]} points={points[selected]} />
       <button onClick={handleVote}>Vote</button>
       <h2>Anecdote with most votes</h2>
-      {most ? (
-        <Anecodtes text={anecdotes[most]} points={points[most]} />
-      ) : (
-        <p>There is no votes yet</p>
-      )}
+
+      <Anecodtes text={anecdotes[mostVotes]} points={points[mostVotes]} />
     </div>
   );
 }
