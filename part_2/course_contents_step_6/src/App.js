@@ -26,7 +26,7 @@ function App() {
       ],
     },
   ];
-  
+
   return (
     <div>
       {courses.length > 0 ? (
