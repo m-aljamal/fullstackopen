@@ -3,19 +3,25 @@ import "./App.css";
 import Person from "./components/Person";
 
 function App() {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
-  const [newName, setNewName] = useState("");
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "04-09-255588" },
+  ]);
+  const [formData, setFormData] = useState({ name: "", number: "" });
+  // const [newNumber, setNewNumber] = useState("");
+  const { name, number } = formData;
   const handleChange = (e) => {
-    setNewName(e.target.value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const checkName = persons.find((person) => person.name === newName);
+    const checkName = persons.find(
+      (person) => person.name === name || person.number === number
+    );
     checkName
-      ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat({ name: newName }));
-    setNewName("");
+      ? alert(`${name} ${number} is already added to phonebook`)
+      : setPersons(persons.concat({ name, number }));
+    setFormData({ name: "", number: "" });
   };
 
   return (
@@ -23,7 +29,17 @@ function App() {
       <h2>Phonebook</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          name: <input type="text" value={newName} onChange={handleChange} />
+          name:{" "}
+          <input type="text" value={name} name="name" onChange={handleChange} />
+        </div>
+        <div>
+          Number:{" "}
+          <input
+            type="text"
+            value={number}
+            name="number"
+            onChange={handleChange}
+          />
         </div>
         <div>
           <button type="submit">add</button>
