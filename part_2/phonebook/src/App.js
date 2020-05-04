@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Person from "./components/Person";
 import CreateNew from "./components/CreateNew";
+import axios from "axios";
 
 function App() {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "04-09-255588" },
-    { name: "Muhammed", number: "04-09-2777777" },
-    { name: "Yassen", number: "08-09-255588" },
-  ]);
+  const [persons, setPersons] = useState([]);
 
   const [serchName, setSerchName] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get("http://localhost:3001/persons");
+      setPersons(res.data);
+    };
+    getData();
+  }, []);
 
   const handleSubmit = (value) => {
     const { name, number } = value;
