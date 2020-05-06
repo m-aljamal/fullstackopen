@@ -3,11 +3,14 @@ import "./App.css";
 import Person from "./components/Person";
 import CreateNew from "./components/CreateNew";
 import backend from "./components/backend";
+import Message from "./components/Message";
 
 function App() {
   const [persons, setPersons] = useState([]);
 
   const [serchName, setSerchName] = useState([]);
+
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -17,6 +20,12 @@ function App() {
     getData();
   }, []);
 
+  const addMessage = (message, type) => {
+    setMessage({ message, type });
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  };
   const handleSubmit = async (value) => {
     const { name, number } = value;
 
@@ -32,6 +41,7 @@ function App() {
           setPersons(
             persons.map((person) => (person.id !== checkName.id ? person : res))
           );
+          addMessage(`Number updated ${number}`, "update");
         } catch (error) {
           console.log(error);
         }
@@ -40,6 +50,7 @@ function App() {
       try {
         const res = await backend.create({ name, number });
         setPersons(persons.concat(res));
+        addMessage(`Added ${name}`, "add");
       } catch (error) {
         console.log(error);
       }
@@ -69,6 +80,8 @@ function App() {
   return (
     <div className="App">
       <h2>Phonebook</h2>
+      {message && <Message message={message} />}
+
       <div>
         Serch: <input type="text" onChange={handleSerch} />
       </div>

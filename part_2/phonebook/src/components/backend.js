@@ -19,6 +19,8 @@ const update = async (id, data) => {
   const res = await axios.put(`${baseUrl}/${id}`, data);
   return res.data;
 };
+
+
 export default {
   getAll,
   create,
