@@ -23,9 +23,17 @@ function App() {
     const checkName = persons.find(
       (person) => person.name === name || person.number === number
     );
+
     checkName
       ? alert(`${name} ${number} is already added to phonebook`)
-      : setPersons(persons.concat({ name, number }));
+      : axios
+          .post("http://localhost:3001/persons", { name, number })
+          .then((res) => {
+            setPersons(persons.concat(res.data));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
   };
 
   const handleSerch = (e) => {
