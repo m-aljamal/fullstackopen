@@ -2,7 +2,10 @@
   text-align: center;
 }
 
-.add, .update {
+.add,
+.update,
+.remove,
+.delete {
   color: #4caf50;
   font-size: 1.3rem;
   background: #f7f1f1;
@@ -11,7 +14,15 @@
   border: 2px solid #4caf50;
   padding: 7px;
 }
-.update{
+.update {
   color: #4b67e2;
   border: 2px solid #4b67e2;
+}
+.remove {
+  color: #e24e4e;
+  border: 2px solid #e24e4e;
+}
+.delete {
+  color: #e27d4e;
+  border: 2px solid #e27d4e;
 }
