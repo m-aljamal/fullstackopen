@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Person from "./components/Person";
 import CreateNew from "./components/CreateNew";
-import axios from "axios";
+import backend from "./components/backend";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get("http://localhost:3001/persons");
-      setPersons(res.data);
+      const res = await backend.getAll();
+      setPersons(res);
     };
     getData();
   }, []);
@@ -23,13 +23,13 @@ function App() {
     const checkName = persons.find(
       (person) => person.name === name || person.number === number
     );
-
+    
     checkName
       ? alert(`${name} ${number} is already added to phonebook`)
-      : axios
-          .post("http://localhost:3001/persons", { name, number })
+      : backend
+          .create({ name, number })
           .then((res) => {
-            setPersons(persons.concat(res.data));
+            setPersons(persons.concat(res));
           })
           .catch((err) => {
             console.log(err);
