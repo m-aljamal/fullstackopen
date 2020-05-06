@@ -3,7 +3,6 @@ import "./App.css";
 import Person from "./components/Person";
 import CreateNew from "./components/CreateNew";
 import backend from "./components/backend";
-import axios from "axios";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -18,23 +17,33 @@ function App() {
     getData();
   }, []);
 
-  const handleSubmit = (value) => {
+  const handleSubmit = async (value) => {
     const { name, number } = value;
 
-    const checkName = persons.find(
-      (person) => person.name === name || person.number === number
-    );
+    const checkName = persons.find((person) => person.name === name);
 
-    checkName
-      ? alert(`${name} ${number} is already added to phonebook`)
-      : backend
-          .create({ name, number })
-          .then((res) => {
-            setPersons(persons.concat(res));
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    if (checkName) {
+      const confirm = window.confirm(
+        `${name} is already added to phonebook, replace the old number with new one? `
+      );
+      if (confirm) {
+        try {
+          const res = await backend.update(checkName.id, { name, number });
+          setPersons(
+            persons.map((person) => (person.id !== checkName.id ? person : res))
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else {
+      try {
+        const res = await backend.create({ name, number });
+        setPersons(persons.concat(res));
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const handleSerch = (e) => {
@@ -69,13 +78,11 @@ function App() {
       <h2>Numbers</h2>
 
       {serchName.length > 0
-        ? serchName.map((person) => (
-            <Person key={person.name} person={person} />
-          ))
+        ? serchName.map((person) => <Person key={person.id} person={person} />)
         : persons &&
           persons.map((person) => (
             <Person
-              key={person.name}
+              key={person.id}
               person={person}
               deleteContact={deleteContact}
             />

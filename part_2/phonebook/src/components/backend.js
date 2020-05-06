@@ -12,12 +12,16 @@ const create = async (data) => {
 };
 
 const remove = async (id) => {
-  const res = await axios.delete(`${baseUrl}/${id}`);
-  
-  
+  await axios.delete(`${baseUrl}/${id}`);
+};
+
+const update = async (id, data) => {
+  const res = await axios.put(`${baseUrl}/${id}`, data);
+  return res.data;
 };
 export default {
   getAll,
   create,
   remove,
+  update
 };
