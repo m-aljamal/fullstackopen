@@ -3,6 +3,7 @@ import "./App.css";
 import Person from "./components/Person";
 import CreateNew from "./components/CreateNew";
 import backend from "./components/backend";
+import axios from "axios";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -23,7 +24,7 @@ function App() {
     const checkName = persons.find(
       (person) => person.name === name || person.number === number
     );
-    
+
     checkName
       ? alert(`${name} ${number} is already added to phonebook`)
       : backend
@@ -43,6 +44,19 @@ function App() {
     serchName && setSerchName(serchName);
   };
 
+  const deleteContact = (id, name) => {
+    const confirm = window.confirm(`delete ${name} ?`);
+    if (confirm) {
+      backend
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   return (
     <div className="App">
       <h2>Phonebook</h2>
@@ -59,7 +73,13 @@ function App() {
             <Person key={person.name} person={person} />
           ))
         : persons &&
-          persons.map((person) => <Person key={person.name} person={person} />)}
+          persons.map((person) => (
+            <Person
+              key={person.name}
+              person={person}
+              deleteContact={deleteContact}
+            />
+          ))}
     </div>
   );
 }
