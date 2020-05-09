@@ -25,6 +25,14 @@ app.get("/api/persons", (req, res) => {
   res.json(contacts);
 });
 
+app.get("/info", (req, res) => {
+  const date = new Date();
+
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.write(
+    `<p>Phonebook has info for ${contacts.length} people</p><br /><p>${date}</p>`
+  );
+});
 const port = 3001;
 
 app.listen(port, () => {
