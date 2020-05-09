@@ -52,10 +52,19 @@ app.get("/api/person/:id", (req, res) => {
 });
 app.delete("/api/person/:id", (req, res) => {
   const contact = contacts.filter((cont) => cont.id !== Number(req.params.id));
- 
   res.json(contact);
 });
 
+app.post("/api/persons", (req, res) => {
+  const { name, number } = req.body;
+  const newObject = {
+    name,
+    number,
+    id: Math.round(Math.random() * 100),
+  };
+  contacts.push(newObject);
+  res.json(contacts);
+});
 const port = 3001;
 
 app.listen(port, () => {
