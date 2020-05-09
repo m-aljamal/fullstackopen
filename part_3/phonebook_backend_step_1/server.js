@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const morgan = require('morgan')
 app.use(express.json());
 
 const contacts = [
@@ -31,6 +31,11 @@ const contacts = [
   },
 ];
 
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+morgan.token(':method', function (req, res) { return req.headers['content-type'] })
+
+
 app.get("/api/persons", (req, res) => {
   res.json(contacts);
 });
@@ -43,7 +48,7 @@ app.get("/info", (req, res) => {
     `<p>Phonebook has info for ${contacts.length} people</p><br /><p>${date}</p>`
   );
 });
-app.get("/api/person/:id", (req, res) => {
+app.get("/api/person/:id",(req, res) => {
   const contact = contacts.filter((cont) => cont.id === Number(req.params.id));
   if (contact.length === 0) {
     res.status(404).json({ message: "can not find the person with that id" });
@@ -70,7 +75,6 @@ app.post("/api/persons", (req, res) => {
     (contact) => contact.name.toLowerCase() === name.toLowerCase()
   );
 
-  console.log(findName);
 
   if (findName) {
     res.status(401).json({ error: "name must be unique" });
