@@ -57,6 +57,24 @@ app.delete("/api/person/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
   const { name, number } = req.body;
+  if (!name) {
+    res.status(401).json({ error: "missing name, please provide name value " });
+  }
+  if (!number) {
+    res
+      .status(401)
+      .json({ error: "missing number, please provide number value " });
+  }
+
+  const findName = contacts.find(
+    (contact) => contact.name.toLowerCase() === name.toLowerCase()
+  );
+
+  console.log(findName);
+
+  if (findName) {
+    res.status(401).json({ error: "name must be unique" });
+  }
   const newObject = {
     name,
     number,
