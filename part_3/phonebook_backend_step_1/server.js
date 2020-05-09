@@ -19,6 +19,16 @@ const contacts = [
     number: "040-125456",
     id: 3,
   },
+  {
+    name: "Rami ",
+    number: "040-125456",
+    id: 4,
+  },
+  {
+    name: "Enas ",
+    number: "040-125456",
+    id: 5,
+  },
 ];
 
 app.get("/api/persons", (req, res) => {
@@ -33,6 +43,19 @@ app.get("/info", (req, res) => {
     `<p>Phonebook has info for ${contacts.length} people</p><br /><p>${date}</p>`
   );
 });
+app.get("/api/person/:id", (req, res) => {
+  const contact = contacts.filter((cont) => cont.id === Number(req.params.id));
+  if (contact.length === 0) {
+    res.status(404).json({ message: "can not find the person with that id" });
+  }
+  res.json(contact);
+});
+app.delete("/api/person/:id", (req, res) => {
+  const contact = contacts.filter((cont) => cont.id !== Number(req.params.id));
+ 
+  res.json(contact);
+});
+
 const port = 3001;
 
 app.listen(port, () => {
