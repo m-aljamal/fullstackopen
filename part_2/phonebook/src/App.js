@@ -43,7 +43,10 @@ function App() {
           );
           addMessage(`Number updated ${number}`, "update");
         } catch (error) {
-         addMessage(`Contact for ${name} has already been removed from server`, 'remove')
+          addMessage(
+            `Contact for ${name} has already been removed from server`,
+            "remove"
+          );
         }
       }
     } else {
@@ -71,7 +74,7 @@ function App() {
         .remove(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id));
-          addMessage(`removed ${name}`, "delete")
+          addMessage(`removed ${name}`, "delete");
         })
         .catch((err) => {
           console.log(err);
