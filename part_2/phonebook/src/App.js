@@ -4,7 +4,6 @@ import Person from "./components/Person";
 import CreateNew from "./components/CreateNew";
 import backend from "./components/backend";
 import Message from "./components/Message";
-
 function App() {
   const [persons, setPersons] = useState([]);
 
@@ -15,8 +14,10 @@ function App() {
   useEffect(() => {
     const getData = async () => {
       const res = await backend.getAll();
+
       setPersons(res);
     };
+
     getData();
   }, []);
 
@@ -53,6 +54,7 @@ function App() {
       try {
         const res = await backend.create({ name, number });
         setPersons(persons.concat(res));
+
         addMessage(`Added ${name}`, "add");
       } catch (error) {
         console.log(error);
