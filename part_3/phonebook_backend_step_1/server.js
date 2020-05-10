@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
-const morgan = require('morgan')
+const morgan = require("morgan");
+const cors = require("cors");
 app.use(express.json());
-
-const contacts = [
+app.use(cors());
+let contacts = [
   {
     name: "Muhammed ",
     number: "040-125456",
@@ -31,10 +32,12 @@ const contacts = [
   },
 ];
 
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
-morgan.token(':method', function (req, res) { return req.headers['content-type'] })
-
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms")
+);
+morgan.token(":method", function (req, res) {
+  return req.headers["content-type"];
+});
 
 app.get("/api/persons", (req, res) => {
   res.json(contacts);
@@ -48,16 +51,17 @@ app.get("/info", (req, res) => {
     `<p>Phonebook has info for ${contacts.length} people</p><br /><p>${date}</p>`
   );
 });
-app.get("/api/person/:id",(req, res) => {
+app.get("/api/person/:id", (req, res) => {
   const contact = contacts.filter((cont) => cont.id === Number(req.params.id));
   if (contact.length === 0) {
     res.status(404).json({ message: "can not find the person with that id" });
   }
   res.json(contact);
 });
-app.delete("/api/person/:id", (req, res) => {
-  const contact = contacts.filter((cont) => cont.id !== Number(req.params.id));
-  res.json(contact);
+app.delete("/api/persons/:id", (req, res) => {
+  contacts = contacts.filter((cont) => cont.id !== Number(req.params.id));
+
+  res.json({ msg: "contact deleted" });
 });
 
 app.post("/api/persons", (req, res) => {
@@ -75,7 +79,6 @@ app.post("/api/persons", (req, res) => {
     (contact) => contact.name.toLowerCase() === name.toLowerCase()
   );
 
-
   if (findName) {
     res.status(401).json({ error: "name must be unique" });
   }
@@ -85,10 +88,10 @@ app.post("/api/persons", (req, res) => {
     id: Math.round(Math.random() * 100),
   };
   contacts.push(newObject);
-  res.json(contacts);
+  res.json(newObject);
 });
-const port = 3001;
+const PORT  =  process.env.PORT || 3001;
 
-app.listen(port, () => {
-  console.log("app start at " + port);
+app.listen(PORT, () => {
+  console.log("app start at " + PORT);
 });
