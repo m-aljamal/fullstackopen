@@ -3,6 +3,7 @@
 }
 
 .add,
+.error,
 .update,
 .remove,
 .delete {
@@ -25,4 +26,8 @@
 .delete {
   color: #e27d4e;
   border: 2px solid #e27d4e;
+}
+.error {
+  color: #fc0000;
+  border: 2px solid #fc0000;
 }

@@ -6,8 +6,13 @@ const getAll = async () => {
 };
 
 const create = async (data) => {
-  const res = await axios.post(baseUrl, data);
-  return res.data;
+  try {
+    const res = await axios.post(baseUrl, data);
+    return res.data;
+  } catch (error) {
+    // console.log(error.response.data);
+    return error.response.data
+  }
 };
 
 const remove = async (id) => {

@@ -53,9 +53,12 @@ function App() {
     } else {
       try {
         const res = await backend.create({ name, number });
-        setPersons(persons.concat(res));
-
-        addMessage(`Added ${name}`, "add");
+        if (res.error) {
+          addMessage(res.error, "error");
+        } else {
+          setPersons(persons.concat(res));
+          addMessage(`Added ${name}`, "add");
+        }
       } catch (error) {
         console.log(error);
       }

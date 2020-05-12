@@ -16,14 +16,18 @@ morgan.token(":method", function (req, res) {
 
 app.use("/api/persons", require("./routes/contacts_routes"));
 
-app.use('/info' , require("./routes/info_route"))
+app.use("/info", require("./routes/info_route"));
 
 app.use((req, res) => {
   res.status(404).send({ error: "unknown endpoit" });
 });
 app.use((error, req, res, next) => {
-  console.log(error);
-  res.status(400).send({ error: "server error" });
+  console.log(error.message);
+  if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
+  } else {
+    res.status(400).json({ error: "server error" });
+  }
   next(error);
 });
 mongoose

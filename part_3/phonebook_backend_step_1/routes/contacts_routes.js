@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Contact = require("../model/Contacts_model");
+const { check, validationResult } = require("express-validator");
 
 router.get("/", async (req, res, next) => {
   try {
     const contacts = await Contact.find({});
-    console.log(contacts);
 
     res.json(contacts);
   } catch (error) {
@@ -35,33 +35,44 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  const { name, number } = req.body;
-  if (!name) {
-    res.status(401).json({ error: "missing name, please provide name value " });
-  }
-  if (!number) {
-    res
-      .status(401)
-      .json({ error: "missing number, please provide number value " });
-  }
-  try {
-    const findName = await Contact.findOne({ name });
+router.post(
+  "/",
+  [
+    check("name", "name is required").notEmpty(),
+    check("name", "name should contain at least 3 charcters").isLength({
+      min: 3,
+    }),
 
-    if (findName) {
-      res.status(401).json({ error: "name must be unique" });
+    check("number", "number is required").notEmpty(),
+    check("number", "number should contain at least 8 charcters").isLength({
+      min: 8,
+    }),
+  ],
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: errors.array()[0].msg });
     }
+    const { name, number } = req.body;
+   
+    try {
+      const findName = await Contact.findOne({ name });
 
-    const newObject = new Contact({
-      name,
-      number,
-    });
-    newObject.save();
-    res.json(newObject);
-  } catch (error) {
-    next(error);
+      if (findName) {
+        return res.status(401).json({ error: "name must be unique" });
+      }
+
+      const newObject = new Contact({
+        name,
+        number,
+      });
+      newObject.save();
+       res.json(newObject);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.put("/:id", async (req, res, next) => {
   const { name, number } = req.body;
@@ -75,7 +86,7 @@ router.put("/:id", async (req, res, next) => {
       contact,
       { new: true }
     );
-    res.json(updateContact);
+     res.json(updateContact);
   } catch (error) {
     next(error);
   }
