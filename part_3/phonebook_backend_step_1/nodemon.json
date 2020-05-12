@@ -1,0 +1,6 @@
+{
+    "env":{
+        "MDB_USER": "m_jamal",
+        "MDB_PASS" : "metal158"
+    }
+}
