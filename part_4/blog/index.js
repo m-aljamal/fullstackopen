@@ -1,8 +1,8 @@
-const http = require('http')
-const app = require('./app')
+const http = require("http");
+const app = require("./app");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
-const server = http.createServer(app)
+const server = http.createServer(app);
 mongoose
   .connect(
     `mongodb+srv://${process.env.MDB_USER}:${process.env.MDB_PASS}@cluster0-fbyyl.mongodb.net/blog_app?retryWrites=true&w=majority`,
