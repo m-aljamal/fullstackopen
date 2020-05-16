@@ -25,7 +25,26 @@ const mostBlogs = (blogs) => {
   }));
   return blogsAuthor.reduce((max, num) => (num.blogs > max.blogs ? num : max));
 };
+
+const mostLikes = (blogs) => {
+  const authors = blogs.reduce(
+    (sum, num) => (
+      (sum[num["author"]] = sum[num["author"]] + num["likes"] || num["likes"]),
+      sum
+    ),
+    {}
+  );
+
+  const highScore = Math.max(...Object.values(authors));
+
+  const author = Object.keys(authors).filter(
+    (auth) => authors[auth] === highScore
+  );
+
+  return { author: author[0], likes: highScore };
+};
 module.exports = {
+  mostLikes,
   dummy,
   totalLikes,
   favoriteBlog,
