@@ -14,13 +14,9 @@ const getAllBlogs = async (req, res, next) => {
 };
 
 const createNewBlog = async (req, res, next) => {
-  try {
-    const blog = await new Blog(req.body);
-    await blog.save();
-    res.json(blog);
-  } catch (error) {
-    next(error);
-  }
+  const blog = await new Blog(req.body);
+  await blog.save();
+  res.json(blog);
 };
 exports.createNewBlog = createNewBlog;
 exports.getAllBlogs = getAllBlogs;
