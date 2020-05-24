@@ -5,7 +5,7 @@ const cors = require("cors");
 const middleware = require("./utils/middleware");
 const mongoose = require("mongoose");
 const logger = require("./utils/logger");
-require('express-async-errors') // used to eliminate try-catch
+require("express-async-errors"); // used to eliminate try-catch
 mongoose
   .connect(config.MONGO_URI, {
     useNewUrlParser: true,
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use("/api/blogs", require("./routes/blogs_routes"));
-
+app.use("/api/users", require("./routes/User_routes"));
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
