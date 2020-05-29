@@ -19,7 +19,7 @@ router.get("/getUser", middleware.auth, userController.getLoggedInUser);
 
 router.post(
   "/login",
-  [
+  [ 
     check("userName", "Please enter your user name").notEmpty(),
     check("password", "Please enter your password").notEmpty(),
   ],

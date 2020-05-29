@@ -80,9 +80,9 @@ const login = async (req, res, next) => {
       id: user.id,
     },
   };
-  jwt.sign(payload, config.JWT_KEY, { expiresIn: "2h" }, (err, token) => {
+  jwt.sign(payload, config.JWT_KEY, (err, token) => {
     if (err) throw err;
-    res.json({ token });
+    res.json(token);
   });
 };
 

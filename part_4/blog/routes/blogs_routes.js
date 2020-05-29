@@ -5,4 +5,5 @@ router.get("/", blogController.getAllBlogs);
 router.post("/", middleware.auth, blogController.createNewBlog);
 router.delete("/:id", middleware.auth, blogController.deleteBlog);
 router.put("/:id", middleware.auth,blogController.updateBlog);
+
 module.exports = router;
