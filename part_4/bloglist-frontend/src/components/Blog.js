@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ToggleForm from "./ToggleForm";
 import blogService from "../services/blogs";
 
@@ -29,15 +29,16 @@ const Blog = ({ blog: { title, url, author, likes, id }, deleteBlog }) => {
         padding: "10px 10px",
         width: "50%",
       }}
+      className='blog'
     >
       {title}
       <ToggleForm label="view" hideLabel="hide">
         <div>
           <p>Link: {url}</p>
-          <p>
-            Likes: {like} <button onClick={handleLikeClick}>like</button>
+          <p className='likes'>
+            Likes: {like} <button className='likeButton' onClick={handleLikeClick}>like</button>
           </p>
-          <p>Author: {author}</p>
+          <p className='author'>Author: {author}</p>
         </div>
           <button onClick={handleDelete}>remove</button>
       </ToggleForm>

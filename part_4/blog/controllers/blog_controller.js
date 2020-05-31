@@ -66,6 +66,7 @@ const updateBlog = async (req, res) => {
   const updateBlog = await Blog.findByIdAndUpdate(blog, newBlog, { new: true });
   res.json(updateBlog);
 };
+
 exports.updateBlog = updateBlog;
 exports.createNewBlog = createNewBlog;
 exports.getAllBlogs = getAllBlogs;

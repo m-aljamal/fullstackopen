@@ -24,6 +24,9 @@ app.use(middleware.requestLogger);
 
 app.use("/api/blogs", require("./routes/blogs_routes"));
 app.use("/api/users", require("./routes/User_routes"));
+if (process.env.NODE_ENV === "test") {
+  app.use("/api/testing", require("./routes/test_routes"));
+}
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
