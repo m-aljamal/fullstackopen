@@ -2,9 +2,9 @@ import React from "react";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { connect } from "react-redux";
 import { addAlert } from "../reducers/notificationReducer";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 const AnecdoteForm = ({ createAnecdote, addAlert }) => {
-  const addAnecdote = (e) => {
+  const addAnecdote = async (e) => {
     e.preventDefault();
     const text = e.target.anecdote.value;
     e.target.anecdote.value = "";
@@ -12,7 +12,6 @@ const AnecdoteForm = ({ createAnecdote, addAlert }) => {
     createAnecdote(text);
     addAlert(`Adding ${text}`, "normal");
   };
-console.log();
 
   return (
     <div>
@@ -29,5 +28,5 @@ console.log();
 AnecdoteForm.prototype = {
   createAnecdote: PropTypes.func.isRequired,
   addAlert: PropTypes.func.isRequired,
-}
+};
 export default connect(null, { createAnecdote, addAlert })(AnecdoteForm);

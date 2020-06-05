@@ -1,3 +1,5 @@
+import { getAll, createNew, addVoteToServer } from "../services/anecdotes";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -19,38 +21,42 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
     case "NEW_ANECDOTES":
       return [...state, action.data];
+    case "NEW_ANEC":
+      return action.data;
     case "ADD_VOTE":
       const id = action.data.id;
-      const contantToVote = state.find((n) => n.id === id);
-      const addVote = {
-        ...contantToVote,
-        votes: contantToVote.votes + 1,
-      };
-      return state.map((a) => (a.id !== id ? a : addVote));
+      return state.map((a) => (a.id !== id ? a : action.data));
     default:
       return state;
   }
 };
 
-export const addVote = (id) => {
-  return {
-    type: "ADD_VOTE",
-    data: { id },
-  };
+export const initialAne = () => async (dispatch) => {
+  const res = await getAll();
+  dispatch({
+    type: "NEW_ANEC",
+    data: res,
+  });
 };
 
-export const createAnecdote = (text) => {
-  return {
-    type: "NEW_ANECDOTES",
-    data: {
-      content: text,
-      id: getId(),
-      votes: 0,
-    },
-  };
+export const addVote = (id) => async (dispatch) => {
+  const updateVote = await addVoteToServer(id);
+  dispatch({
+    type: "ADD_VOTE",
+    data: updateVote,
+  });
 };
+
+export const createAnecdote = (content) => async (dispatch) => {
+  const res = await createNew(content);
+  dispatch({
+    type: "NEW_ANECDOTES",
+    data: res,
+  });
+};
+
 export default reducer;
